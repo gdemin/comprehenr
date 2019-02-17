@@ -1,6 +1,6 @@
 # List comprehensions in R
 
-Package provides 'Python'-style list comprehensions for R. It uses ususal R loops (`for`, `while` and `repeat`) and usual `if` as list producers. Syntax is very similiar to Python. The diffrenece is that returned value shoud be at the end of the loop body. 
+Package provides 'Python'-style list comprehensions for R. It uses usual R loops (`for`, `while` and `repeat`) and usual `if` as list producers. Syntax is very similar to Python. The difference is that returned value should be at the end of the loop body. 
 
 ```R
 # rather useless statement - squares of even numbers

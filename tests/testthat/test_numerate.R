@@ -33,6 +33,17 @@ list(
 )
 )
 
+
+expect_equal(mark(
+    unname(a)
+),
+list(
+    list("", 1),
+    list("", 2),
+    list("", 3)
+)
+)
+
 expect_equal(unmark(mark(
     a
 )),
