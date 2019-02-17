@@ -1,0 +1,38 @@
+---
+title: "List comprehensions in R"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Package provides 'Python'-style list comprehensions for R. It uses ususal R loops (`for`, `while` and `repeat`) and usual `if` as list producers. Syntax is very similiar to Python. The diffrenece is that returned value shoud be at the end of the loop body. 
+
+Rather unpractical example - squares of even numbers:
+```{r}
+library(comprehenr)
+to_vec(for(i in 1:10) if(i %% 2==0) i*i)
+```
+Pythagorean triples:
+```{r}
+to_list(for (x in 1:20) for (y in x:20) for (z in y:20) if (x^2 + y^2 == z^2) c(x, y, z))
+```
+More examples:
+```{r}
+colours = c("red", "green", "yellow", "blue")
+things = c("house", "car", "tree")
+to_vec(for(x in colours) for(y in things) paste(x, y))
+
+# prime numbers
+noprimes = to_vec(for (i in 2:7) for (j in seq(i*2, 99, i)) j)
+primes = to_vec(for (x in 2:99) if(!x %in% noprimes) x)
+primes
+```

@@ -1,2 +1,6 @@
+^Meta$
+^doc$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+SupplementaryMaterials
+README.md
