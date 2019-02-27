@@ -1,13 +1,14 @@
 Package: comprehenr
 Type: Package
-Title: List Comprehensions in R
-Version: 0.5.0
+Title: List Comprehensions
+Version: 0.5.2
 Maintainer: Gregory Demin <gdemin@gmail.com>
 Authors@R: person("Gregory", "Demin", email = "gdemin@gmail.com",
          role = c("aut", "cre"))
-Description: Package provides 'Python'-style list comprehensions for R.  
-    It uses usual R loops ('for', 'while' and 'repeat') and usual 'if' as list producers. 
-    Simple example: 'to_list(for(i in 1:10) if(i %% 2==0) i*i)'.
+Description: Provides 'Python'-style list comprehensions.  
+    List comprehension expressions use usual loops ('for', 'while' and 'repeat') and 
+    usual 'if' as list producers. In many cases it gives more concise notation than
+    standard '*apply + filter' strategy. 
 URL: https://github.com/gdemin/comprehenr
 BugReports: https://github.com/gdemin/comprehenr/issues
 Depends:
