@@ -1,5 +1,10 @@
 # List comprehensions in R
 
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/comprehenr)](https://cran.r-project.org/package=comprehenr)
+[![](https://cranlogs.r-pkg.org/badges/expss)](https://cran.rstudio.com/web/packages/comprehenr/index.html)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/expss)](https://cran.rstudio.com/web/packages/comprehenr/index.html)
+[![Coverage Status](https://img.shields.io/codecov/c/github/gdemin/expss/master.svg)](https://codecov.io/github/gdemin/expss?branch=master)
+
 Package provides Python-style list comprehensions for R. List comprehension
 expressions use usual loops (`for`, `while` and `repeat`) and usual `if` as
 list producers. Syntax is very similar to Python. The difference is that
