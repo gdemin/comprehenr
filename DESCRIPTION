@@ -1,14 +1,14 @@
 Package: comprehenr
 Type: Package
 Title: List Comprehensions
-Version: 0.5.2
+Version: 0.5.4
 Maintainer: Gregory Demin <gdemin@gmail.com>
 Authors@R: person("Gregory", "Demin", email = "gdemin@gmail.com",
          role = c("aut", "cre"))
-Description: Provides 'Python'-style list comprehensions.  
-    List comprehension expressions use usual loops ('for', 'while' and 'repeat') and 
-    usual 'if' as list producers. In many cases it gives more concise notation than
-    standard '*apply + filter' strategy. 
+Description: Provides 'Python'-style list comprehensions.
+    List comprehension expressions use usual loops (for(), while() and repeat()) and
+    usual if() as list producers. In many cases it gives more concise notation than
+    standard "*apply + filter" strategy.
 URL: https://github.com/gdemin/comprehenr
 BugReports: https://github.com/gdemin/comprehenr/issues
 Depends:
