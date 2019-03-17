@@ -99,3 +99,21 @@ expect_equal(
     to_vec(for(i in colnames(iris)) if(is.numeric(iris[[i]])) setNames(mean(iris[[i]]), i) , use.names = TRUE),
     colMeans(iris[,-5])
 )
+
+
+context("`i, j`")
+
+res = to_vec(for(`i, j` in zip_lists(letters, LETTERS)) paste(i, j))
+expect_identical(res, paste(letters, LETTERS))
+
+
+res = to_vec(for(`i, j` in numerate(letters)) if(i %% 2==0) paste(i, j))
+index = seq_along(letters)
+expect_identical(res, paste(index[index %% 2==0], letters[index %% 2==0]))
+
+
+res = to_vec(for(`i, j` in numerate(letters)) if(i %% 2==0) for(`k, z` in numerate(LETTERS)) paste(i, j, k, z))
+index = seq_along(letters)
+true_res = expand.grid(paste(seq_along(letters), LETTERS), paste(index[index %% 2==0], letters[index %% 2==0]))
+true_res = paste(true_res[[2]], true_res[[1]])
+expect_identical(res, true_res)

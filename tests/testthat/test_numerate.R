@@ -123,3 +123,14 @@ expect_error(
         )
     )
 )
+
+
+
+expect_equal(
+    lag_list(1:3),
+    list(
+        list(1,2),
+        list(2,3)
+    )
+
+)

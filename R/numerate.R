@@ -8,9 +8,10 @@
 #' \code{unmark}.}
 #' \item{zip_lists}{ combine lists side-by-sidy. Reverse operation - \code{unzip_list}.}
 #' \item{unzip_list}{ It's similair to matrix transposition but for list of lists.}
+#' \item{lag_list}{ convert argument to list of arguments with previous values. x -> list(x[i-1], x[i]).}
 #' }
 #'
-#' @param x list or list of lists
+#' @param x list, vector or list of lists
 #' @param item numeric number of list in which stored values
 #' @param ... lists which will be zipped
 #'
@@ -30,6 +31,10 @@
 #' named_list = c('Chicago' = 'ORD', 'Detroit' = 'DTW', 'Atlanta' = 'ATL')
 #' str(mark(named_list))
 #'
+#' set.seed(123)
+#' rand_sequence = runif(20)
+#' # gives only locally increasing values
+#' to_vec(for(`i, j` in lag_list(rand_sequence)) if(j>i) j)
 numerate = function(x){
     unzip_list(list(seq_along(x), x))
 }
@@ -92,6 +97,12 @@ unzip_list = function(x){
 #' @rdname numerate
 zip_lists = function(...){
     unzip_list(list(...))
+}
+
+#' @export
+#' @rdname numerate
+lag_list = function(x){
+    lapply(seq_along(x)[-1], function(i) list(x[i-1], x[i]))
 }
 
 

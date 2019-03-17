@@ -22,7 +22,8 @@ list for \code{to_list} and vector for \code{to_vec}
 \description{
 \code{to_list} converts usual R loops expressions to list producers.
 Expression should be started with \code{for} ,  \code{while} or
-\code{repeat}. See examples.
+\code{repeat}. You can iterate over multiple lists if you provide several
+loop variables in backticks. See examples.
 }
 \examples{
 # rather useless expression - squares of even numbers
@@ -39,4 +40,12 @@ to_vec(for(x in colours) for(y in things) paste(x, y))
 noprimes = to_vec(for (i in 2:7) for (j in seq(i*2, 99, i)) j)
 primes = to_vec(for (x in 2:99) if(!x \%in\% noprimes) x)
 primes
+
+# iteration over multiple lists
+to_vec(for(`i, j` in numerate(letters)) if(i \%\% 2==0) paste(i, j))
+
+set.seed(123)
+rand_sequence = runif(20)
+# gives only locally increasing values
+to_vec(for(`i, j` in lag_list(rand_sequence)) if(j>i) j)
 }

@@ -12,7 +12,7 @@
 
 
 
-<title>List comprehensions in R</title>
+<title>List Comprehensions in R</title>
 
 
 
@@ -296,7 +296,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 
-<h1 class="title toc-ignore">List comprehensions in R</h1>
+<h1 class="title toc-ignore">List Comprehensions in R</h1>
 
 
 
@@ -338,6 +338,17 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb3-11" data-line-number="11">primes</a>
 <a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt;  [1]  2  3  5  7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83</span></a>
 <a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt; [24] 89 97</span></a></code></pre></div>
+<p>You can iterate over multiple lists if you provide several loop variables in backticks:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">to_vec</span>(<span class="cf">for</span>(<span class="st">`</span><span class="dt">i, j</span><span class="st">`</span> <span class="cf">in</span> <span class="kw">numerate</span>(letters)) <span class="cf">if</span>(i <span class="op">%%</span><span class="st"> </span><span class="dv">2</span><span class="op">==</span><span class="dv">0</span>) <span class="kw">paste</span>(i, j))</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt;  [1] &quot;2 b&quot;  &quot;4 d&quot;  &quot;6 f&quot;  &quot;8 h&quot;  &quot;10 j&quot; &quot;12 l&quot; &quot;14 n&quot; &quot;16 p&quot; &quot;18 r&quot; &quot;20 t&quot;</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; [11] &quot;22 v&quot; &quot;24 x&quot; &quot;26 z&quot;</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">rand_sequence =<span class="st"> </span><span class="kw">runif</span>(<span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co"># gives only locally increasing values</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="kw">to_vec</span>(<span class="cf">for</span>(<span class="st">`</span><span class="dt">i, j</span><span class="st">`</span> <span class="cf">in</span> <span class="kw">lag_list</span>(rand_sequence)) <span class="cf">if</span>(j<span class="op">&gt;</span>i) j)</a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;  [1] 0.7883051 0.8830174 0.9404673 0.5281055 0.8924190 0.9568333 0.6775706</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;  [8] 0.8998250 0.3279207 0.9545036</span></a></code></pre></div>
 
 
 

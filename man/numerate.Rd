@@ -8,6 +8,7 @@
 \alias{unmark}
 \alias{unzip_list}
 \alias{zip_lists}
+\alias{lag_list}
 \title{Auxiliary functions for working with lists}
 \usage{
 numerate(x)
@@ -23,9 +24,11 @@ unmark(x, item = 2)
 unzip_list(x)
 
 zip_lists(...)
+
+lag_list(x)
 }
 \arguments{
-\item{x}{list or list of lists}
+\item{x}{list, vector or list of lists}
 
 \item{item}{numeric number of list in which stored values}
 
@@ -43,6 +46,7 @@ sequential number of element and element. Reverse operation -
 \code{unmark}.}
 \item{zip_lists}{ combine lists side-by-sidy. Reverse operation - \code{unzip_list}.}
 \item{unzip_list}{ It's similair to matrix transposition but for list of lists.}
+\item{lag_list}{ convert argument to list of arguments with previous values. x -> list(x[i-1], x[i]).}
 }
 }
 \examples{
@@ -58,4 +62,8 @@ str(numerate(cities))
 named_list = c('Chicago' = 'ORD', 'Detroit' = 'DTW', 'Atlanta' = 'ATL')
 str(mark(named_list))
 
+set.seed(123)
+rand_sequence = runif(20)
+# gives only locally increasing values
+to_vec(for(`i, j` in lag_list(rand_sequence)) if(j>i) j)
 }
