@@ -58,16 +58,16 @@ to_vec = function(expr, recursive = TRUE, use.names = FALSE){
 }
 
 
-add_assignment_to_final_loops = function(expr){
+add_assignment_to_final_loops = function(expr, result_exists = FALSE){
     if(is_loop(expr)){
         if(has_loop_inside(expr[-1])){
-            expr[-1] = as.call(lapply(as.list(expr)[-1], add_assignment_to_final_loops))
+            expr[-1] = as.call(lapply(as.list(expr)[-1], add_assignment_to_final_loops, result_exists = result_exists))
         } else {
-            expr = add_assignment_to_loop(expr)
+            expr = add_assignment_to_loop(expr, result_exists = result_exists)
         }
     } else {
         if(has_loop_inside(expr)){
-            expr = as.call(lapply(as.list(expr), add_assignment_to_final_loops))
+            expr = as.call(lapply(as.list(expr), add_assignment_to_final_loops, result_exists = result_exists))
         }
     }
     expr
@@ -127,16 +127,46 @@ has_loop_inside = function(expr){
 }
 
 
-add_assignment_to_loop = function(expr){
+add_assignment_to_loop = function(expr, result_exists = FALSE){
     last_item = length(expr)
-    expr[[last_item]] = bquote({
-
-        .__curr = {.(expr[[last_item]])}
-        if(!is.null(.__curr)){
+    if(result_exists){
+        expr[[last_item]] = bquote({
+            .__curr = {.(expr[[last_item]])}
             .___counter = .___counter + 1
-            .___res[[.___counter]] = .__curr
-        }
+            if(!is.null(.__curr)){
+                .___res[[.___counter]] = .__curr
+            }
 
-    })
+        })
+    } else {
+        expr[[last_item]] = bquote({
+
+            .__curr = {.(expr[[last_item]])}
+            if(!is.null(.__curr)){
+                .___counter = .___counter + 1
+                .___res[[.___counter]] = .__curr
+            }
+
+        })
+    }
     expr
+}
+
+#' @rdname to_list
+#' @export
+modify = function(expr, data = NULL){
+    expr = substitute(expr)
+    if(!is_loop(expr)) {
+        stop(paste("argument should be expression with 'for', 'while' or 'repeat' but we have: ", deparse(expr, width.cutoff = 500)[1]))
+    }
+    on.exit(suppressWarnings(rm(list = c(".___res", ".___counter", ".__curr"), envir = parent.frame())))
+    if(is.null(data)) data = expr[[3]]
+    eval.parent(substitute(.___res <- data))
+    expr = expand_loop_variables(expr)
+    expr = add_assignment_to_final_loops(expr, result_exists = TRUE)
+    eval.parent(quote(.___counter <- 0)) # initial list length
+    eval.parent(expr)
+    res = get(".___res", envir = parent.frame())
+    res
+
 }

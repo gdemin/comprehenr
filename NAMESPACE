@@ -3,6 +3,7 @@
 export(enumerate)
 export(lag_list)
 export(mark)
+export(modify)
 export(numerate)
 export(to_list)
 export(to_vec)

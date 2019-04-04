@@ -117,3 +117,22 @@ index = seq_along(letters)
 true_res = expand.grid(paste(seq_along(letters), LETTERS), paste(index[index %% 2==0], letters[index %% 2==0]))
 true_res = paste(true_res[[2]], true_res[[1]])
 expect_identical(res, true_res)
+
+
+context("modify")
+data(iris)
+iris2 = modify(for(i in iris) if(is.numeric(i)) scale(i))
+res_iris = iris
+res_iris[,-5] = lapply(iris[,-5], scale)
+expect_equal(iris2, res_iris)
+
+iris2 = modify(for(`name, value` in mark(iris)) if(grepl("Width", name)) scale(value), data = iris)
+
+res_iris = iris
+res_iris[,c("Sepal.Width", "Petal.Width")] = lapply(iris[,c("Sepal.Width", "Petal.Width")], scale)
+expect_equal(iris2, res_iris)
+
+
+# library(data.table)
+# dt_iris = as.data.table(iris)
+# dt_iris2 = modify(for(i in dt_iris) if(is.numeric(i)) scale(i))

@@ -3,11 +3,14 @@
 \name{to_list}
 \alias{to_list}
 \alias{to_vec}
+\alias{modify}
 \title{List comprehensions for R}
 \usage{
 to_list(expr)
 
 to_vec(expr, recursive = TRUE, use.names = FALSE)
+
+modify(expr, data = NULL)
 }
 \arguments{
 \item{expr}{expression which starts with \code{for} ,  \code{while} or \code{repeat}.}

@@ -1,3 +1,7 @@
+0.6.5 (09.04.2019)
+================
+* add for lists/data.frames modification
+
 0.6.0 (18.03.2019)
 ================
 * add iterations over multiple lists: to_vec(for(`i, j` in numerate(letters)) if(i %% 2==0) paste(i, j))
