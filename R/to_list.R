@@ -1,12 +1,18 @@
 #' List comprehensions for R
 #'
-#' \code{to_list} converts usual R loops expressions to list producers.
+#' \itemize{\item{\code{to_list}}{ converts usual R loops expressions to list producers.
 #' Expression should be started with \code{for} ,  \code{while} or
 #' \code{repeat}. You can iterate over multiple lists if you provide several
-#' loop variables in backticks. See examples.
+#' loop variables in backticks. See examples.}
+#' \item{\code{to_vec}}{ is the same as \code{to_list} but return vector. See examples.}
+#' \item{\code{alter}}{ return the same type as its argument but with modified
+#' elements. It is useful for altering existing data.frames or lists. See
+#' examples.}
+#' }
 #' @param expr expression which starts with \code{for} ,  \code{while} or \code{repeat}.
 #' @param recursive	logical. Should unlisting be applied to list components of result? See \link[base]{unlist} for details.
 #' @param use.names logical. Should names be preserved? See \link[base]{unlist} for details.
+#' @param data data.frame/list/vector which we want to alter
 #' @return list for \code{to_list} and vector for \code{to_vec}
 #' @export
 #'
@@ -33,6 +39,31 @@
 #' rand_sequence = runif(20)
 #' # gives only locally increasing values
 #' to_vec(for(`i, j` in lag_list(rand_sequence)) if(j>i) j)
+#'
+#' # 'alter' examples
+#' data(iris)
+#' # scale numeric variables
+#' res = alter(for(i in iris) if(is.numeric(i)) scale(i))
+#' str(res)
+#'
+#' # convert factors to characters
+#' res = alter(for(i in iris) if(is.factor(i)) as.character(i))
+#' str(res)
+#'
+#' # 'data' argument example
+#' # specify which columns to map with a numeric vector of positions:
+#' res = alter(
+#'     for(`i, value` in numerate(mtcars)) if(i %in% c(1, 4, 5)) as.character(value),
+#'     data = mtcars
+#' )
+#' str(res)
+#'
+#' # or with a vector of names:
+#' res = alter(
+#'     for(`name, value` in mark(mtcars)) if(name %in% c("cyl", "am")) as.character(value),
+#'     data = mtcars
+#' )
+#' str(res)
 to_list = function(expr){
     expr = substitute(expr)
     if(!is_loop(expr)) {
@@ -41,7 +72,7 @@ to_list = function(expr){
 
     expr = expand_loop_variables(expr)
     expr = add_assignment_to_final_loops(expr)
-    on.exit(suppressWarnings(rm(list = c(".___res", ".___counter", ".__curr"), envir = parent.frame())))
+    on.exit(suppressWarnings(rm(list = c(".___res", ".___counter", ".___curr"), envir = parent.frame())))
     eval.parent(quote(.___res <- list()))
     eval.parent(quote(.___counter <- 0)) # initial list length
     eval.parent(expr)
@@ -131,20 +162,20 @@ add_assignment_to_loop = function(expr, result_exists = FALSE){
     last_item = length(expr)
     if(result_exists){
         expr[[last_item]] = bquote({
-            .__curr = {.(expr[[last_item]])}
+            .___curr = {.(expr[[last_item]])}
             .___counter = .___counter + 1
-            if(!is.null(.__curr)){
-                .___res[[.___counter]] = .__curr
+            if(!is.null(.___curr)){
+                .___res[[.___counter]] = .___curr
             }
 
         })
     } else {
         expr[[last_item]] = bquote({
 
-            .__curr = {.(expr[[last_item]])}
-            if(!is.null(.__curr)){
+            .___curr = {.(expr[[last_item]])}
+            if(!is.null(.___curr)){
                 .___counter = .___counter + 1
-                .___res[[.___counter]] = .__curr
+                .___res[[.___counter]] = .___curr
             }
 
         })
@@ -154,12 +185,12 @@ add_assignment_to_loop = function(expr, result_exists = FALSE){
 
 #' @rdname to_list
 #' @export
-modify = function(expr, data = NULL){
+alter = function(expr, data = NULL){
     expr = substitute(expr)
     if(!is_loop(expr)) {
         stop(paste("argument should be expression with 'for', 'while' or 'repeat' but we have: ", deparse(expr, width.cutoff = 500)[1]))
     }
-    on.exit(suppressWarnings(rm(list = c(".___res", ".___counter", ".__curr"), envir = parent.frame())))
+    on.exit(suppressWarnings(rm(list = c(".___res", ".___counter", ".___curr"), envir = parent.frame())))
     if(is.null(data)) data = expr[[3]]
     eval.parent(substitute(.___res <- data))
     expr = expand_loop_variables(expr)

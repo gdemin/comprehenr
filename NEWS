@@ -1,6 +1,6 @@
 0.6.5 (09.04.2019)
 ================
-* add for lists/data.frames modification
+* add 'alter' function for conditional lists/data.frames modification
 
 0.6.0 (18.03.2019)
 ================

@@ -30,3 +30,28 @@ rand_sequence = runif(20)
 to_vec(for(`i, j` in lag_list(rand_sequence)) if(j>i) j)
 
 
+## ------------------------------------------------------------------------
+data(iris)
+# scale numeric variables
+res = alter(for(i in iris) if(is.numeric(i)) scale(i))
+str(res)
+
+# convert factors to characters
+res = alter(for(i in iris) if(is.factor(i)) as.character(i))
+str(res)
+
+# 'data' argument example
+# specify which columns to map with a numeric vector of positions:
+res = alter(
+    for(`i, value` in numerate(mtcars)) if(i %in% c(1, 4, 5)) as.character(value),
+    data = mtcars
+)
+str(res)
+
+# or with a vector of names:
+res = alter(
+    for(`name, value` in mark(mtcars)) if(name %in% c("cyl", "am")) as.character(value),
+    data = mtcars
+)
+str(res)
+
