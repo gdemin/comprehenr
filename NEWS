@@ -1,3 +1,7 @@
+0.6.6 (07.06.2019)
+================
+* add 'exclude' function for dropping elements from data.frame/list in 'alter'
+
 0.6.5 (09.04.2019)
 ================
 * add 'alter' function for conditional lists/data.frames modification

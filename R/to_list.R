@@ -4,10 +4,12 @@
 #' Expression should be started with \code{for} ,  \code{while} or
 #' \code{repeat}. You can iterate over multiple lists if you provide several
 #' loop variables in backticks. See examples.}
-#' \item{\code{to_vec}}{ is the same as \code{to_list} but return vector. See examples.}
+#' \item{\code{to_vec}}{ is the same as 'to_list' but return vector. See examples.}
 #' \item{\code{alter}}{ return the same type as its argument but with modified
 #' elements. It is useful for altering existing data.frames or lists. See
 #' examples.}
+#' \item{\code{exclude}}{ is an auxiliary function for dropping elements in
+#' 'alter'. There are no arguments for this function.}
 #' }
 #' @param expr expression which starts with \code{for} ,  \code{while} or \code{repeat}.
 #' @param recursive	logical. Should unlisting be applied to list components of result? See \link[base]{unlist} for details.
@@ -48,6 +50,10 @@
 #'
 #' # convert factors to characters
 #' res = alter(for(i in iris) if(is.factor(i)) as.character(i))
+#' str(res)
+#'
+#' # exclude factors from data.frame
+#' res = alter(for(i in iris) if(is.factor(i)) exclude())
 #' str(res)
 #'
 #' # 'data' argument example
@@ -164,8 +170,12 @@ add_assignment_to_loop = function(expr, result_exists = FALSE){
         expr[[last_item]] = bquote({
             .___curr = {.(expr[[last_item]])}
             .___counter = .___counter + 1
-            if(!is.null(.___curr)){
-                .___res[[.___counter]] = .___curr
+            if(inherits(.___curr, "exclude")){
+                .___res[[.___counter]] = NULL
+            } else {
+                if(!is.null(.___curr)){
+                    .___res[[.___counter]] = .___curr
+                }
             }
 
         })
@@ -173,7 +183,7 @@ add_assignment_to_loop = function(expr, result_exists = FALSE){
         expr[[last_item]] = bquote({
 
             .___curr = {.(expr[[last_item]])}
-            if(!is.null(.___curr)){
+            if(!is.null(.___curr) && !inherits(.___curr, "exclude")){
                 .___counter = .___counter + 1
                 .___res[[.___counter]] = .___curr
             }
@@ -200,4 +210,13 @@ alter = function(expr, data = NULL){
     res = get(".___res", envir = parent.frame())
     res
 
+}
+
+
+#' @rdname to_list
+#' @export
+exclude = function(){
+    res = numeric(0)
+    class(res) = "exclude"
+    res
 }

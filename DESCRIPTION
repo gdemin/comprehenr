@@ -1,7 +1,7 @@
 Package: comprehenr
 Type: Package
 Title: List Comprehensions
-Version: 0.6.5
+Version: 0.6.6
 Maintainer: Gregory Demin <gdemin@gmail.com>
 Authors@R: person("Gregory", "Demin", email = "gdemin@gmail.com",
          role = c("aut", "cre"))

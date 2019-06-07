@@ -68,6 +68,10 @@ str(res)
 res = alter(for(i in iris) if(is.factor(i)) as.character(i))
 str(res)
 
+# drop factors
+res = alter(for(i in iris) if(is.factor(i)) exclude())
+str(res)
+
 # 'data' argument example
 # specify which columns to map with a numeric vector of positions:
 res = alter(

@@ -6,6 +6,11 @@ expect_identical(
 )
 
 expect_identical(
+    to_list(for(i in 1:10) if(i %% 2 !=0) i else exclude()),
+    list(1L,3L,5L,7L,9L)
+)
+
+expect_identical(
     to_list(for(i in 1:10) if(i>1000) i),
     list()
 )
@@ -124,6 +129,11 @@ data(iris)
 iris2 = alter(for(i in iris) if(is.numeric(i)) scale(i))
 res_iris = iris
 res_iris[,-5] = lapply(iris[,-5], scale)
+expect_equal(iris2, res_iris)
+
+data(iris)
+iris2 = alter(for(i in iris) if(is.factor(i)) exclude())
+res_iris = iris[,-5]
 expect_equal(iris2, res_iris)
 
 iris2 = alter(for(`name, value` in mark(iris)) if(endsWith(name, "Width")) scale(value), data = iris)

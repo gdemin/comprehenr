@@ -2,6 +2,7 @@
 
 export(alter)
 export(enumerate)
+export(exclude)
 export(lag_list)
 export(mark)
 export(numerate)

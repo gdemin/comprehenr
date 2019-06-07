@@ -4,6 +4,7 @@
 \alias{to_list}
 \alias{to_vec}
 \alias{alter}
+\alias{exclude}
 \title{List comprehensions for R}
 \usage{
 to_list(expr)
@@ -11,6 +12,8 @@ to_list(expr)
 to_vec(expr, recursive = TRUE, use.names = FALSE)
 
 alter(expr, data = NULL)
+
+exclude()
 }
 \arguments{
 \item{expr}{expression which starts with \code{for} ,  \code{while} or \code{repeat}.}
@@ -29,10 +32,12 @@ list for \code{to_list} and vector for \code{to_vec}
 Expression should be started with \code{for} ,  \code{while} or
 \code{repeat}. You can iterate over multiple lists if you provide several
 loop variables in backticks. See examples.}
-\item{\code{to_vec}}{ is the same as \code{to_list} but return vector. See examples.}
+\item{\code{to_vec}}{ is the same as 'to_list' but return vector. See examples.}
 \item{\code{alter}}{ return the same type as its argument but with modified
 elements. It is useful for altering existing data.frames or lists. See
 examples.}
+\item{\code{exclude}}{ is an auxiliary function for dropping elements in
+'alter'. There are no arguments for this function.}
 }
 }
 \examples{
@@ -67,6 +72,10 @@ str(res)
 
 # convert factors to characters
 res = alter(for(i in iris) if(is.factor(i)) as.character(i))
+str(res)
+
+# exclude factors from data.frame
+res = alter(for(i in iris) if(is.factor(i)) exclude())
 str(res)
 
 # 'data' argument example
