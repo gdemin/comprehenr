@@ -102,7 +102,7 @@ zip_lists = function(...){
 #' @export
 #' @rdname numerate
 lag_list = function(x){
-    lapply(seq_along(x)[-1], function(i) list(x[i-1], x[i]))
+    lapply(seq_along(x)[-1], function(i) list(x[[i-1]], x[[i]]))
 }
 
 
