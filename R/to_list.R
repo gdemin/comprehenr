@@ -169,10 +169,10 @@ add_assignment_to_loop = function(expr, result_exists = FALSE){
     if(result_exists){
         expr[[last_item]] = bquote({
             .___curr = {.(expr[[last_item]])}
-            .___counter = .___counter + 1
             if(inherits(.___curr, "exclude")){
-                .___res[[.___counter]] = NULL
+                .___res[[.___counter + 1]] = NULL
             } else {
+                .___counter = .___counter + 1
                 if(!is.null(.___curr)){
                     .___res[[.___counter]] = .___curr
                 }
@@ -201,7 +201,16 @@ alter = function(expr, data = NULL){
         stop(paste("argument should be expression with 'for', 'while' or 'repeat' but we have: ", deparse(expr, width.cutoff = 500)[1]))
     }
     on.exit(suppressWarnings(rm(list = c(".___res", ".___counter", ".___curr"), envir = parent.frame())))
-    if(is.null(data)) data = expr[[3]]
+    if(is.null(data)) {
+        data = expr[[3]]
+        if(is.call(data)){
+            first = as.character(data[[1]])
+            if(first %in% c("numerate", "enumerate", "mark", "lag_list")){
+                data = data[[2]]
+            }
+        }
+
+    }
     eval.parent(substitute(.___res <- data))
     expr = expand_loop_variables(expr)
     expr = add_assignment_to_final_loops(expr, result_exists = TRUE)

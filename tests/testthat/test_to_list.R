@@ -146,3 +146,34 @@ expect_error(alter(1))
 # library(data.table)
 # dt_iris = as.data.table(iris)
 # dt_iris2 = alter(for(i in dt_iris) if(is.numeric(i)) scale(i))
+
+data(mtcars)
+mtcars2= alter(for(i in mtcars) if(length(unique(i))==2) exclude()) # drop am, vs
+res_mtcars = mtcars
+res_mtcars[, c("am", "vs")]  = NULL
+expect_equal(mtcars2, res_mtcars)
+
+data(mtcars)
+mtcars2= alter(for(`i,j` in numerate(mtcars)) if(i %in% c(8, 9)) exclude()) # drop am, vs
+res_mtcars = mtcars
+res_mtcars[, c("am", "vs")]  = NULL
+expect_equal(mtcars2, res_mtcars)
+
+
+data(mtcars)
+mtcars2= alter(for(`i,j` in enumerate(mtcars)) if(i %in% c(8, 9)) exclude()) # drop am, vs
+res_mtcars = mtcars
+res_mtcars[, c("am", "vs")]  = NULL
+expect_equal(mtcars2, res_mtcars)
+
+data(mtcars)
+mtcars2= alter(for(`i,j` in mark(mtcars)) if(i %in% c("am", "vs")) exclude()) # drop am, vs
+res_mtcars = mtcars
+res_mtcars[, c("am", "vs")]  = NULL
+expect_equal(mtcars2, res_mtcars)
+
+data(mtcars)
+mtcars2= alter(for(`i,j` in lag_list(mtcars)) if(length(unique(i))==2) exclude()) # drop am, vs
+res_mtcars = mtcars
+res_mtcars[, c("am", "vs")]  = NULL
+expect_equal(mtcars2, res_mtcars)
