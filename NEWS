@@ -1,3 +1,8 @@
+0.6.7 (17.06.2019)
+================
+* urgent fix for bug with incorrect counter in 'alter' when used with 'exclude'
+* change behaviour 'lag_list':  x -> list(x[[i-1]], x[[i]])
+
 0.6.6 (07.06.2019)
 ================
 * add 'exclude' function for dropping elements from data.frame/list in 'alter'
@@ -7,7 +12,7 @@
 * add 'alter' function for conditional lists/data.frames modification
 
 0.6.0 (18.03.2019)
-================
+===============
 * add iterations over multiple lists: to_vec(for(`i, j` in numerate(letters)) if(i %% 2==0) paste(i, j))
 * add function 'lag_list':  x -> list(x[i-1], x[i])
 
