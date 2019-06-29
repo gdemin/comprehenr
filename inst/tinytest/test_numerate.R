@@ -1,5 +1,4 @@
-context("numerate")
-
+cat("\nContext:", "numerate", "\n")
 a = list(4, 5, 6)
 
 expect_equal(numerate(a),
@@ -21,7 +20,8 @@ expect_equal(unnumerate(list(
 list(3, 6)
 )
 
-context("mark")
+
+cat("\nContext:", "mark", "\n")
 a = list(a = 1, b = 2, c = 3)
 expect_equal(mark(
     a
@@ -50,7 +50,8 @@ expect_equal(unmark(mark(
     a
 )
 
-context("unzip_list")
+
+cat("\nContext:", "unzip_list", "\n")
 b = list(
     list(1, 4),
     list(2, 5),

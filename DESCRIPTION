@@ -15,7 +15,7 @@ Depends:
     R (>= 3.3.0),
 Suggests:
     knitr,
-    testthat,
+    tinytest,
 VignetteBuilder: knitr
 License: GPL-2
 Encoding: UTF-8

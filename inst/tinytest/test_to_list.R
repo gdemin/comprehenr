@@ -1,3 +1,4 @@
+context = function(x) cat("\nContext:", x, "\n")
 context("to_list")
 
 expect_identical(
@@ -59,6 +60,7 @@ expect_error(to_list(a + 2))
 
 
 context("to_vec")
+
 expect_identical(
     to_vec(for(i in 1:10) if(i %% 2 !=0) i),
     c(1L,3L,5L,7L,9L)
@@ -125,6 +127,7 @@ expect_identical(res, true_res)
 
 
 context("alter")
+
 data(iris)
 iris2 = alter(for(i in iris) if(is.numeric(i)) scale(i))
 res_iris = iris
