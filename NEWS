@@ -1,3 +1,10 @@
+0.6.8 (17.06.2019)
+================
+* maintainance release
+* convert documentation to markdown
+* add rmarkdown to SUGGESTS
+* move tests from testthat to tinytest
+
 0.6.7 (17.06.2019)
 ================
 * urgent fix for bug with incorrect counter in 'alter' when used with 'exclude'
