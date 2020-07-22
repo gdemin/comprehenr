@@ -16,11 +16,11 @@ alter(expr, data = NULL)
 exclude()
 }
 \arguments{
-\item{expr}{expression which starts with \code{for} ,  \code{while} or \code{repeat}.}
+\item{expr}{expression which starts with \code{for}, \code{while} or \code{repeat}.}
 
-\item{recursive}{logical. Should unlisting be applied to list components of result? See \link[base]{unlist} for details.}
+\item{recursive}{logical. Should unlisting be applied to list components of result? See \link[base:unlist]{unlist} for details.}
 
-\item{use.names}{logical. Should names be preserved? See \link[base]{unlist} for details.}
+\item{use.names}{logical. Should names be preserved? See \link[base:unlist]{unlist} for details.}
 
 \item{data}{data.frame/list/vector which we want to alter}
 }
@@ -28,16 +28,17 @@ exclude()
 list for \code{to_list} and vector for \code{to_vec}
 }
 \description{
-\itemize{\item{\code{to_list}}{ converts usual R loops expressions to list producers.
-Expression should be started with \code{for} ,  \code{while} or
+\itemize{
+\item \code{to_list} converts usual R loops expressions to list producers.
+Expression should be started with \code{for}, \code{while} or
 \code{repeat}. You can iterate over multiple lists if you provide several
-loop variables in backticks. See examples.}
-\item{\code{to_vec}}{ is the same as 'to_list' but return vector. See examples.}
-\item{\code{alter}}{ return the same type as its argument but with modified
+loop variables in backticks. See examples.
+\item \code{to_vec} is the same as 'to_list' but return vector. See examples.
+\item \code{alter} returns the same type as its argument but with modified
 elements. It is useful for altering existing data.frames or lists. See
-examples.}
-\item{\code{exclude}}{ is an auxiliary function for dropping elements in
-'alter'. There are no arguments for this function.}
+examples.
+\item \code{exclude} is an auxiliary function for dropping elements in
+\code{alter}. There are no arguments for this function.
 }
 }
 \examples{

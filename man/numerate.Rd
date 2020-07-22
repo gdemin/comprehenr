@@ -39,14 +39,14 @@ list or list of lists
 }
 \description{
 \itemize{
-\item{numerate}{ returns list of lists. Each list consists of two elements:
+\item \code{numerate} returns list of lists. Each list consists of two elements:
 sequential number of element and element. Reverse operation -
-\code{unumerate}.}
-\item{mark}{ returns list of lists. Each list consists of two elements: name of element and element. Reverse operation -
-\code{unmark}.}
-\item{zip_lists}{ combine lists side-by-sidy. Reverse operation - \code{unzip_list}.}
-\item{unzip_list}{ It's similair to matrix transposition but for list of lists.}
-\item{lag_list}{ convert argument to list of arguments with previous values. x -> list(x[i-1], x[i]).}
+\code{unumerate}.
+\item \code{mark} returns list of lists. Each list consists of two elements: name of element and element. Reverse operation -
+\code{unmark}.
+\item \code{zip_lists} combines lists side-by-sidy. Reverse operation - \code{unzip_list}.
+\item \code{unzip_list} is similair to matrix transposition but for list of lists.
+\item \code{lag_list} converts argument to list of arguments with previous values: \code{x} -> \code{list(x[i-1], x[i])}.
 }
 }
 \examples{

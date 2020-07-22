@@ -1,21 +1,21 @@
 #' List comprehensions for R
 #'
-#' \itemize{\item{\code{to_list}}{ converts usual R loops expressions to list producers.
-#' Expression should be started with \code{for} ,  \code{while} or
-#' \code{repeat}. You can iterate over multiple lists if you provide several
-#' loop variables in backticks. See examples.}
-#' \item{\code{to_vec}}{ is the same as 'to_list' but return vector. See examples.}
-#' \item{\code{alter}}{ return the same type as its argument but with modified
+#' - `to_list` converts usual R loops expressions to list producers.
+#' Expression should be started with `for`, `while` or
+#' `repeat`. You can iterate over multiple lists if you provide several
+#' loop variables in backticks. See examples.
+#' - `to_vec` is the same as 'to_list' but return vector. See examples.
+#' - `alter` returns the same type as its argument but with modified
 #' elements. It is useful for altering existing data.frames or lists. See
-#' examples.}
-#' \item{\code{exclude}}{ is an auxiliary function for dropping elements in
-#' 'alter'. There are no arguments for this function.}
-#' }
-#' @param expr expression which starts with \code{for} ,  \code{while} or \code{repeat}.
-#' @param recursive	logical. Should unlisting be applied to list components of result? See \link[base]{unlist} for details.
-#' @param use.names logical. Should names be preserved? See \link[base]{unlist} for details.
+#' examples.
+#' - `exclude` is an auxiliary function for dropping elements in
+#' `alter`. There are no arguments for this function.
+#'
+#' @param expr expression which starts with `for`, `while` or `repeat`.
+#' @param recursive	logical. Should unlisting be applied to list components of result? See [unlist][base::unlist] for details.
+#' @param use.names logical. Should names be preserved? See [unlist][base::unlist] for details.
 #' @param data data.frame/list/vector which we want to alter
-#' @return list for \code{to_list} and vector for \code{to_vec}
+#' @return list for `to_list` and vector for `to_vec`
 #' @export
 #'
 #' @examples
@@ -141,20 +141,20 @@ add_expansion_to_loop = function(expr){
 }
 
 is_loop = function(expr){
-    if(!is.call(expr)) return(FALSE)
+    is.call(expr) || return(FALSE)
     first_item = expr[[1]]
     identical(first_item, quote(`for`)) ||identical(first_item, quote(`while`)) ||identical(first_item, quote(`repeat`))
 }
 
 is_for_loop = function(expr){
-    if(!is.call(expr)) return(FALSE)
+    is.call(expr) || return(FALSE)
     first_item = expr[[1]]
     identical(first_item, quote(`for`))
 }
 
 has_loop_inside = function(expr){
-    if(!is.call(expr)) return(FALSE)
-    if(is_loop(expr)) return(TRUE)
+    is.call(expr) || return(FALSE)
+    !is_loop(expr) || return(TRUE)
     any(
         unlist(
             lapply(as.list(expr), has_loop_inside),
