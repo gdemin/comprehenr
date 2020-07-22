@@ -1,7 +1,7 @@
 Package: comprehenr
 Type: Package
 Title: List Comprehensions
-Version: 0.6.7
+Version: 0.6.8
 Maintainer: Gregory Demin <gdemin@gmail.com>
 Authors@R: person("Gregory", "Demin", email = "gdemin@gmail.com",
          role = c("aut", "cre"))
@@ -16,6 +16,7 @@ Depends:
 Suggests:
     knitr,
     tinytest,
+    rmarkdown
 VignetteBuilder: knitr
 License: GPL-2
 Encoding: UTF-8
