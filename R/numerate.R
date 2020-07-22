@@ -75,9 +75,9 @@ unmark = function(x, item = 2){
 unzip_list = function(x){
     all_lengths = unique(lengths(x))
     if(length(x)==0) return(x)
-    if(length(all_lengths)!=1){
+    (length(all_lengths) == 1) ||
         stop("each element of the argument 'x' should have the same length.")
-    }
+
     global_names = names(x)
     local_names = lapply(x, names)
     get_names = function(i){

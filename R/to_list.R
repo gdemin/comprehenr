@@ -72,9 +72,9 @@
 #' str(res)
 to_list = function(expr){
     expr = substitute(expr)
-    if(!is_loop(expr)) {
+    is_loop(expr) ||
         stop(paste("argument should be expression with 'for', 'while' or 'repeat' but we have: ", deparse(expr, width.cutoff = 500)[1]))
-    }
+
 
     expr = expand_loop_variables(expr)
     expr = add_assignment_to_final_loops(expr)
@@ -197,9 +197,9 @@ add_assignment_to_loop = function(expr, result_exists = FALSE){
 #' @export
 alter = function(expr, data = NULL){
     expr = substitute(expr)
-    if(!is_loop(expr)) {
+    is_loop(expr) ||
         stop(paste("argument should be expression with 'for', 'while' or 'repeat' but we have: ", deparse(expr, width.cutoff = 500)[1]))
-    }
+
     on.exit(suppressWarnings(rm(list = c(".___res", ".___counter", ".___curr"), envir = parent.frame())))
     if(is.null(data)) {
         data = expr[[3]]
