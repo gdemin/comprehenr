@@ -212,7 +212,6 @@ alter = function(expr, data = NULL){
     is_loop(expr) ||
         stop(paste("argument should be expression with 'for', 'while' or 'repeat' but we have: ", deparse(expr, width.cutoff = 500)[1]))
 
-    on.exit(suppressWarnings(rm(list = c(".___res", ".___counter", ".___curr"), envir = parent.frame())))
     if(is.null(data)) {
         data = expr[[3]]
         if(is.call(data)){
@@ -223,13 +222,16 @@ alter = function(expr, data = NULL){
         }
 
     }
-    eval.parent(substitute(.___res <- data))
     expr = expand_loop_variables(expr)
     expr = add_assignment_to_final_loops(expr, result_exists = TRUE)
-    eval.parent(quote(.___counter <- 0)) # initial list length
+    expr = substitute(local({
+        .___res <- data
+        .___counter <- 0  # initial list length
+        expr
+        .___res
+    }))
+
     eval.parent(expr)
-    res = get(".___res", envir = parent.frame())
-    res
 
 }
 
