@@ -57,7 +57,44 @@ expect_false(exists(".___curr"))
 a = 11
 expect_error(to_list(a + 2))
 
+context("to_list scoping")
 
+a_global = 3
+expect_identical(
+    to_list(for(i in 1:10) if(i %% 2 !=0) i*a_global),
+    list(1L*a_global,3L*a_global,5L*a_global,7L*a_global,9L*a_global)
+)
+
+my_fun = function(curr){
+    to_list(for(i in curr) if(i %% 2 !=0) i*a_global)
+}
+expect_identical(
+    my_fun(1:10),
+    list(1L*a_global,3L*a_global,5L*a_global,7L*a_global,9L*a_global)
+)
+
+my_fun = function(curr){
+    a_internal = 4
+    to_list(for(i in curr) if(i %% 2 !=0) i*a_internal)
+}
+
+expect_identical(
+    my_fun(1:10),
+    list(1L*4,3L*4,5L*4,7L*4,9L*4)
+)
+
+data(BOD)
+res = to_list(for(j in 1:2) to_list(for(i in 1:2) BOD[i, j]))
+expect_identical(
+    res,
+    list(list(1, 2), list(8.3, 10.3))
+)
+
+res = to_vec(for(j in 1:2) sum(to_vec(for(i in 1:6) BOD[i, j])))
+expect_identical(
+    res,
+    c(sum(BOD[[1]]), sum(BOD[[2]]))
+)
 
 context("to_vec")
 

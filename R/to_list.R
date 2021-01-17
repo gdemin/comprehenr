@@ -78,12 +78,15 @@ to_list = function(expr){
 
     expr = expand_loop_variables(expr)
     expr = add_assignment_to_final_loops(expr)
-    on.exit(suppressWarnings(rm(list = c(".___res", ".___counter", ".___curr"), envir = parent.frame())))
-    eval.parent(quote(.___res <- list()))
-    eval.parent(quote(.___counter <- 0)) # initial list length
+
+    expr = substitute(local({
+        .___res <- list()
+        .___counter <- 0  # initial list length
+        expr
+        .___res
+    }))
+
     eval.parent(expr)
-    res = get(".___res", envir = parent.frame())
-    res
 
 }
 
@@ -155,12 +158,21 @@ is_for_loop = function(expr){
 has_loop_inside = function(expr){
     is.call(expr) || return(FALSE)
     !is_loop(expr) || return(TRUE)
+    first_elem = expr[[1]]
+    identical(first_elem, quote(to_list)) && return(FALSE)
+    identical(first_elem, quote(to_vec)) && return(FALSE)
+    identical(first_elem, quote(alter)) && return(FALSE)
+    identical(first_elem, quote(comprehenr::to_list)) && return(FALSE)
+    identical(first_elem, quote(comprehenr::to_vec)) && return(FALSE)
+    identical(first_elem, quote(comprehenr::alter)) && return(FALSE)
+
     any(
         unlist(
             lapply(as.list(expr), has_loop_inside),
             recursive = TRUE,
             use.names = FALSE
-        ))
+        )
+    )
 }
 
 
