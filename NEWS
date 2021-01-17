@@ -1,4 +1,8 @@
-0.6.8 (17.06.2019)
+0.6.9 (18-01-2021)
+================
+* fix bug with nested 'to_list'/'to_vec'/'alter' (issue #1)
+
+0.6.8 (22-07-2020)
 ================
 * maintainance release
 * convert documentation to markdown
