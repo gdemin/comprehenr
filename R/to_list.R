@@ -1,3 +1,19 @@
+SPECIAL_FUNCTIONS = expression(
+    to_list,
+    to_vec,
+    alter ,
+    to_df ,
+    to_dfr,
+    to_dfc,
+    comprehenr::to_list,
+    comprehenr::to_vec ,
+    comprehenr::alter  ,
+    comprehenr::to_df  ,
+    comprehenr::to_dfr ,
+    comprehenr::to_dfc
+)
+
+
 #' List comprehensions for R
 #'
 #' - `to_list` converts usual R loops expressions to list producers.
@@ -93,7 +109,7 @@ to_list = function(expr){
 #' @export
 #' @rdname to_list
 to_vec = function(expr, recursive = TRUE, use.names = FALSE){
-    res= eval.parent(substitute(to_list(expr)))
+    res= eval.parent(substitute(comprehenr::to_list(expr)))
     unlist(res, recursive = recursive, use.names = use.names)
 }
 
@@ -159,13 +175,9 @@ has_loop_inside = function(expr){
     is.call(expr) || return(FALSE)
     !is_loop(expr) || return(TRUE)
     first_elem = expr[[1]]
-    identical(first_elem, quote(to_list)) && return(FALSE)
-    identical(first_elem, quote(to_vec)) && return(FALSE)
-    identical(first_elem, quote(alter)) && return(FALSE)
-    identical(first_elem, quote(comprehenr::to_list)) && return(FALSE)
-    identical(first_elem, quote(comprehenr::to_vec)) && return(FALSE)
-    identical(first_elem, quote(comprehenr::alter)) && return(FALSE)
-
+    for(item in SPECIAL_FUNCTIONS){
+        if(identical(item, first_elem)) return(FALSE)
+    }
     any(
         unlist(
             lapply(as.list(expr), has_loop_inside),
