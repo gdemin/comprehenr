@@ -21,6 +21,8 @@ SPECIAL_FUNCTIONS = expression(
 #' `repeat`. You can iterate over multiple lists if you provide several
 #' loop variables in backticks. See examples.
 #' - `to_vec` is the same as 'to_list' but return vector. See examples.
+#' - `to_df` is the same as 'to_list' but return data.frame. All elements of
+#' resulted list will be converted to data.frame and combined via `rbind`.
 #' - `alter` returns the same type as its argument but with modified
 #' elements. It is useful for altering existing data.frames or lists. See
 #' examples.
@@ -30,6 +32,7 @@ SPECIAL_FUNCTIONS = expression(
 #' @param expr expression which starts with `for`, `while` or `repeat`.
 #' @param recursive	logical. Should unlisting be applied to list components of result? See [unlist][base::unlist] for details.
 #' @param use.names logical. Should names be preserved? See [unlist][base::unlist] for details.
+#' @param fill logical. TRUE by default. Should we combine data.frames with different names in the `to_df`?
 #' @param data data.frame/list/vector which we want to alter
 #' @return list for `to_list` and vector for `to_vec`
 #' @export
@@ -57,6 +60,9 @@ SPECIAL_FUNCTIONS = expression(
 #' rand_sequence = runif(20)
 #' # gives only locally increasing values
 #' to_vec(for(`i, j` in lag_list(rand_sequence)) if(j>i) j)
+#'
+#' # to_df
+#' to_df(for(`name, x` in mark(mtcars)) list(mean = mean(x), sd = sd(x), var = name))
 #'
 #' # 'alter' examples
 #' data(iris)
@@ -246,6 +252,49 @@ alter = function(expr, data = NULL){
     eval.parent(expr)
 
 }
+
+
+#' @rdname to_list
+#' @export
+to_df = function(expr, fill = TRUE){
+    res = eval.parent(
+        substitute(
+            comprehenr::to_list(expr)
+        )
+    )
+    for(i in seq_along(res)){
+        if(!is.null(res[[i]]) && !is.data.frame(res[[i]])){
+            res[[i]] = as.data.frame(as.list(res[[i]]))
+        }
+    }
+    #
+    if(fill){
+        all_names = unique(unlist(lapply(res, names), use.names = FALSE))
+        for(i in seq_along(res)){
+            new_names = setdiff(all_names, names(res[[i]]))
+            if(length(new_names)>0){
+                res[[i]][,new_names] = NA
+            }
+        }
+    }
+
+    do.call(rbind, res)
+}
+
+# @rdname to_list
+# @export
+# to_dfr = to_df
+
+# @rdname to_list
+# @export
+# to_dfc = function(expr = NULL){
+#     res = eval.parent(
+#         substitute(
+#             comprehenr::to_list(expr)
+#         )
+#     )
+#     as.data.frame(res)
+# }
 
 
 #' @rdname to_list

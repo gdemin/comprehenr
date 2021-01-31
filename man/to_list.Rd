@@ -4,6 +4,7 @@
 \alias{to_list}
 \alias{to_vec}
 \alias{alter}
+\alias{to_df}
 \alias{exclude}
 \title{List comprehensions for R}
 \usage{
@@ -12,6 +13,8 @@ to_list(expr)
 to_vec(expr, recursive = TRUE, use.names = FALSE)
 
 alter(expr, data = NULL)
+
+to_df(expr, fill = TRUE)
 
 exclude()
 }
@@ -23,6 +26,8 @@ exclude()
 \item{use.names}{logical. Should names be preserved? See \link[base:unlist]{unlist} for details.}
 
 \item{data}{data.frame/list/vector which we want to alter}
+
+\item{fill}{logical. TRUE by default. Should we combine data.frames with different names in the \code{to_df}?}
 }
 \value{
 list for \code{to_list} and vector for \code{to_vec}
@@ -34,6 +39,8 @@ Expression should be started with \code{for}, \code{while} or
 \code{repeat}. You can iterate over multiple lists if you provide several
 loop variables in backticks. See examples.
 \item \code{to_vec} is the same as 'to_list' but return vector. See examples.
+\item \code{to_df} is the same as 'to_list' but return data.frame. All elements of
+resulted list will be converted to data.frame and combined via \code{rbind}.
 \item \code{alter} returns the same type as its argument but with modified
 elements. It is useful for altering existing data.frames or lists. See
 examples.
@@ -64,6 +71,9 @@ set.seed(123)
 rand_sequence = runif(20)
 # gives only locally increasing values
 to_vec(for(`i, j` in lag_list(rand_sequence)) if(j>i) j)
+
+# to_df
+to_df(for(`name, x` in mark(mtcars)) list(mean = mean(x), sd = sd(x), var = name))
 
 # 'alter' examples
 data(iris)

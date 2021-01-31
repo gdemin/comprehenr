@@ -1,3 +1,7 @@
+0.6.10 (31-01-2021)
+================
+* add new function 'to_df' which combine result of list comprehension to data.frame (issue #2)
+
 0.6.9 (18-01-2021)
 ================
 * fix bug with nested 'to_list'/'to_vec'/'alter' (issue #1)

@@ -217,3 +217,32 @@ mtcars2= alter(for(`i,j` in lag_list(mtcars)) if(length(unique(i))==2) exclude()
 res_mtcars = mtcars
 res_mtcars[, c("am", "vs")]  = NULL
 expect_equal(mtcars2, res_mtcars)
+
+context("to_df/to_dfc")
+
+data("mtcars")
+
+expect_identical(
+    to_df(for(each in list(1:2, 2:3, 3:4)) each),
+    structure(list(X1L = c(1L, NA, NA), X2L = c(2L, 2L, NA), X3L = c(NA,
+                                                                     3L, 3L), X4L = c(NA, NA, 4L)), row.names = c(NA, -3L), class = "data.frame")
+)
+
+expect_error(
+    to_df(for(each in list(1:2, 2:3, 3:4)) each, fill = FALSE),
+)
+
+expect_equal(
+    to_df(for(`.name, .x` in mark(mtcars)) list(mean = mean(.x), sd = sd(.x), var = .name)),
+    data.frame(mean = colMeans(mtcars), sd = sapply(mtcars, sd), var = names(mtcars), row.names = seq_along(mtcars))
+)
+
+
+expect_identical(
+    to_df(for(`.index, .x` in enumerate(mtcars)) list(mean = mean(.x), sd = sd(.x), item_id = .index)),
+    data.frame(mean = colMeans(mtcars), sd = sapply(mtcars, sd), item_id = seq_along(mtcars), row.names = seq_along(mtcars))
+)
+
+
+
+
